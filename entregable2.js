@@ -5,6 +5,7 @@ class ProductManager {
   constructor(products = []) {
     this.products = products;
     this.loadProducts();
+    this.nextId = this.products.reduce((maxId, product) => Math.max(maxId, product.id), 1000) + 1
   }
 
   loadProducts() {
@@ -21,8 +22,7 @@ class ProductManager {
   }
 
   addProduct(product) {
-    let nextId = 1001;
-    product.id = nextId++;
+    product.id = this.nextId++;
     this.products.push(product);
     this.saveProducts();
   }
@@ -74,7 +74,6 @@ const rl = readline.createInterface({
 
 rl.on('close', () => {
   console.log('Saliendo...');
-  fs.unlinkSync('archivo.json');
   process.exit(0);
 });
 
@@ -154,4 +153,4 @@ function promptAction() {
 }
 
 promptAction();
-  
+module.exports = ProductManager;
